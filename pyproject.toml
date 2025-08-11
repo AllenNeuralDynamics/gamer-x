@@ -17,6 +17,16 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
+    "chainlit",
+    "langchain_core",
+    "langchain",
+    "langgraph",
+    "langchain_experimental",
+    "aind_data_access_api",
+    "langsmith",
+    "langchain_aws",
+    "pydantic",
+    "sentence_transformers"
 ]
 
 [project.optional-dependencies]
