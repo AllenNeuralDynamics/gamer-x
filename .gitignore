@@ -142,3 +142,4 @@ dmypy.json
 test.py
 .langgraph_api/
 langgraph.json
+test_assets.py
