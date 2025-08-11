@@ -103,7 +103,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
@@ -137,3 +137,6 @@ dmypy.json
 
 # MacOs
 **/.DS_Store
+
+# extras
+test.py
