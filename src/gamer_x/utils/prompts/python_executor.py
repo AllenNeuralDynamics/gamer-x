@@ -1,7 +1,8 @@
 def get_python_excecute_prompt(
         python_code: str,
         python_code_response: str,
-        python_execute_count: int
+        python_execute_count: int,
+        query: str
         ):
 
     python_execute_prompt = f"""
@@ -16,12 +17,13 @@ def get_python_excecute_prompt(
     - NEVER modify the code — run it as is.
     - When summarizing do  not mention variables like the python code response, or python execute count, that is just for your reference.
     Inputs:
+    - Query: {query}
     - Python code: {python_code}
     - Python code response: {python_code_response}
     - Python execute count: {python_execute_count}
     Instructions:
-    - If `python_code_response` is NOT empty or `python_execute_count` > 2, proceed directly to summarization.
-    - Otherwise, execute the provided code using the tool.
+    - If `python_code_response` is NOT an error message or `python_execute_count` > 2, proceed directly to summarization.
+    - Otherwise, If `python_code_response` does not answer the query, execute the provided code using the tool.
     """
     messages = [
         {
