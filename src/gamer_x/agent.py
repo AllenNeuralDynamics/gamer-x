@@ -12,9 +12,9 @@ from gamer_x.utils.nodes.connectors import (
     # final_node
 )
 from gamer_x.utils.nodes.schema_context import (
-    should_continue_schema,
+    # should_continue_schema,
     get_schema_context,
-    get_schema_context_tools,
+    # get_schema_context_tools,
 )
 from gamer_x.utils.nodes.mongodb import (
     execute_mongodb_query, 
@@ -36,7 +36,7 @@ workflow = StateGraph(GraphState)
 workflow.add_node(set_query)
 workflow.add_node(get_schema_context)
 workflow.add_node(execute_mongodb_query)
-workflow.add_node("schema_context_tools", get_schema_context_tools)
+# workflow.add_node("schema_context_tools", get_schema_context_tools)
 workflow.add_node("mongodb_execute_tools", get_mongodb_execute_tools)
 workflow.add_node(code_query_assignment)
 workflow.add_node(python_formatter)
@@ -46,16 +46,17 @@ workflow.add_node("validate_python_script", run_python_script)
 
 workflow.add_edge(START, "set_query")
 workflow.add_edge("set_query", "get_schema_context")
-workflow.add_conditional_edges(
-    "get_schema_context",
-       should_continue_schema,
-    {
-        "continue": "schema_context_tools",
-        "end": "code_query_assignment",
-    },
-)
+workflow.add_edge("get_schema_context", "code_query_assignment")
+# workflow.add_conditional_edges(
+#     "get_schema_context",
+#        should_continue_schema,
+#     {
+#         "continue": "schema_context_tools",
+#         "end": "code_query_assignment",
+#     },
+# )
 
-workflow.add_edge("schema_context_tools", "get_schema_context")
+# workflow.add_edge("schema_context_tools", "get_schema_context")
 
 workflow.add_conditional_edges(
     "code_query_assignment",

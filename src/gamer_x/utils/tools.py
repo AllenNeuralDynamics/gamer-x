@@ -3,7 +3,7 @@ from aind_data_access_api.document_db import MetadataDbClient
 from typing import Literal, Any
 from langchain_experimental.utilities import PythonREPL
 
-from gamer_x.utils.retrievers.schema_context_retriever import SchemaContextRetriever
+#from gamer_x.utils.retrievers.schema_context_retriever import SchemaContextRetriever
 
 # API_GATEWAY_HOST = "api.allenneuraldynamics.org"
 # DATABASE = "metadata_index"
@@ -19,80 +19,80 @@ docdb_api_client = MetadataDbClient(
     collection=COLLECTION,
 )
 
-@tool
-async def retrieve_schema_context(
-    query: str,
-    collection: Literal[
-        "data_schema_fields_index",
-        #"data_schema_defs_index",
-        "data_schema_core_index",
-    ],
-):
-    """
-    collection -
-    1. data_schema_fields_index:
-    - Search for information about schema properties, field definitions,
-    data types, validation rules, and field-specific requirements.
-    - Use when you need to understand what fields are available or how specific
-      properties work.
-    - Use cases:
-        - Building field selections (`$project`)
-        - Understanding field types for queries
-        - Checking required vs optional fields
-        - Field-specific validation rules
-    # 2. data_schema_defs_index:
-    # - Search for schema definitions, enums, nested object structures,
-    # and reusable components.
-    # - Use when you need to understand data models, allowed values,
-    # or complex nested structures.
-    # - Use cases:
-    #     - Working with enum values (`$match` with specific values)
-    #     - Understanding nested object structures
-    #     - Looking up allowed values for fields
-    #     - Complex data type definitions
-    3. data_schema_core_index:
-    - Search for Python implementation details, validation logic,
-        business rules, and model relationships.
-    - Use when you need to understand how validation works or
-        implementation-specific context.
-    query instructions:
-    - Simplify the user's query for the relevant collection, keep in mind that
-    this query will be used to perform vector search against a database
-    - Use cases:
-        - Understanding business logic validation
-        - Model relationships and dependencies
-        - Implementation-specific constraints
-        - Custom validation rules
+# @tool
+# async def retrieve_schema_context(
+#     query: str,
+#     collection: Literal[
+#         "data_schema_fields_index",
+#         #"data_schema_defs_index",
+#         "data_schema_core_index",
+#     ],
+# ):
+#     """
+#     collection -
+#     1. data_schema_fields_index:
+#     - Search for information about schema properties, field definitions,
+#     data types, validation rules, and field-specific requirements.
+#     - Use when you need to understand what fields are available or how specific
+#       properties work.
+#     - Use cases:
+#         - Building field selections (`$project`)
+#         - Understanding field types for queries
+#         - Checking required vs optional fields
+#         - Field-specific validation rules
+#     # 2. data_schema_defs_index:
+#     # - Search for schema definitions, enums, nested object structures,
+#     # and reusable components.
+#     # - Use when you need to understand data models, allowed values,
+#     # or complex nested structures.
+#     # - Use cases:
+#     #     - Working with enum values (`$match` with specific values)
+#     #     - Understanding nested object structures
+#     #     - Looking up allowed values for fields
+#     #     - Complex data type definitions
+#     3. data_schema_core_index:
+#     - Search for Python implementation details, validation logic,
+#         business rules, and model relationships.
+#     - Use when you need to understand how validation works or
+#         implementation-specific context.
+#     query instructions:
+#     - Simplify the user's query for the relevant collection, keep in mind that
+#     this query will be used to perform vector search against a database
+#     - Use cases:
+#         - Understanding business logic validation
+#         - Model relationships and dependencies
+#         - Implementation-specific constraints
+#         - Custom validation rules
 
-    **Process:** Always search the most relevant vector store first,
-                then use additional stores if you need more context.
-    Hierarchical Search Strategy:
-    1. **Primary Search**: Use the vector store most relevant to
-                            your query type
-    2. **Context Search**: If needed, search related vector stores for
-                            additional context
-    3. **Validation Search**: Check core vector store for any business rules
-        that might affect your query
+#     **Process:** Always search the most relevant vector store first,
+#                 then use additional stores if you need more context.
+#     Hierarchical Search Strategy:
+#     1. **Primary Search**: Use the vector store most relevant to
+#                             your query type
+#     2. **Context Search**: If needed, search related vector stores for
+#                             additional context
+#     3. **Validation Search**: Check core vector store for any business rules
+#         that might affect your query
 
-    Example: For a query filtering by "sex" field:
-    1. Search Properties → understand "sex" field structure
-    2. Search Defs → get allowed values (Male/Female)
-    3. Search Core → check any validation rules
-    4. Query Type Mapping
-    Provide explicit mappings:
+#     Example: For a query filtering by "sex" field:
+#     1. Search Properties → understand "sex" field structure
+#     2. Search Defs → get allowed values (Male/Female)
+#     3. Search Core → check any validation rules
+#     4. Query Type Mapping
+#     Provide explicit mappings:
 
-    Query Intent → Vector Store Priority:
+#     Query Intent → Vector Store Priority:
 
-    **Field Existence/Types**: Properties → Core → Defs
-    **Value Filtering**: Defs → Properties → Core
-    **Aggregation Pipelines**: Properties → Defs → Core
-    **Validation Context**: Core → Properties → Defs
-    **Schema Structure**: Defs → Properties → Core
+#     **Field Existence/Types**: Properties → Core → Defs
+#     **Value Filtering**: Defs → Properties → Core
+#     **Aggregation Pipelines**: Properties → Defs → Core
+#     **Validation Context**: Core → Properties → Defs
+#     **Schema Structure**: Defs → Properties → Core
 
-    """
-    retriever = SchemaContextRetriever(k=4, collection=collection)
-    documents = await retriever._aget_relevant_documents(query=query)
-    return documents
+#     """
+#     retriever = SchemaContextRetriever(k=4, collection=collection)
+#     documents = await retriever._aget_relevant_documents(query=query)
+#     return documents
 
 def count_fields(obj: dict = None)-> int:
     """Recursively count all fields in a nested JSON structure"""
@@ -246,6 +246,6 @@ def python_executor(python_code: str):
     return answer
 
 
-schema_context_tools = [retrieve_schema_context]
+#schema_context_tools = [retrieve_schema_context]
 mongodb_execute_tools = [aggregation_retrieval, get_records]
 python_execute_tools = [python_executor]
