@@ -10,7 +10,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 
 from gamer_x.utils.tools import (
-    schema_context_tools, 
+    #schema_context_tools, 
     mongodb_execute_tools,
     python_execute_tools
     )
@@ -20,9 +20,9 @@ from gamer_x.utils.llms import SONNET_4_LLM
 client = Client(api_key=os.getenv("LANGSMITH_API_KEY"))
 
 #  Model that retrieves information about the schema structure 
-template = client.pull_prompt("eden19/mcp-langgraph-schema-context")
-schema_context_model = SONNET_4_LLM.bind_tools(schema_context_tools)
-schema_context_agent = template | schema_context_model
+# template = client.pull_prompt("eden19/mcp-langgraph-schema-context")
+# schema_context_model = SONNET_4_LLM.bind_tools(schema_context_tools)
+# schema_context_agent = template | schema_context_model
 
 #  Model that determines whether Python script or MongoDB query should be executed
 class CodeorQuery(TypedDict):
@@ -58,7 +58,9 @@ class CodeGenerator(TypedDict):
             "necessary imports and print statements"
         ),
     ]
-code_generator_agent = SONNET_4_LLM.with_structured_output(CodeGenerator)
+
+code_generator_agent = SONNET_4_LLM.bind_tools(python_execute_tools)
+#code_generator_agent = SONNET_4_LLM.with_structured_output(CodeGenerator)
 #prompt = client.pull_prompt("eden19/python_formatter")
 # code_generator_agent = prompt | structured_code_generator
 
