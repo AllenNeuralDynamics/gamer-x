@@ -28,7 +28,7 @@ def get_python_format_prompt(
     Be especially careful with time based queries. I recommend removing any external calculations on time within the aggregation pipeline beyond extracting the necessary information. Conduct the calculations after the records are fetched in python.
     Be careful when retrieving numerical values too -- it is possible that the value will be stored as a string in MongoDB, so fields like animal_weight_prior/animal_weight_post need to be converted to floats.
 
-    When displaying MongoDB queries, use this standard format:
+    When displaying the python code, use this standard format:
 
     ```python
     import json

@@ -24,6 +24,7 @@ from gamer_x.utils.nodes.mongodb import (
 from gamer_x.utils.nodes.python import (
     python_formatter,
     should_execute,
+    python_summarizer,
     python_executor,
     run_python_script,
     should_continue_python_run,
@@ -40,6 +41,7 @@ workflow.add_node(execute_mongodb_query)
 workflow.add_node("mongodb_execute_tools", get_mongodb_execute_tools)
 workflow.add_node(code_query_assignment)
 workflow.add_node(python_formatter)
+workflow.add_node(python_summarizer)
 workflow.add_node(python_executor)
 workflow.add_node("validate_python_script", run_python_script)
 # workflow.add_node(final_node)
@@ -82,10 +84,11 @@ workflow.add_conditional_edges(
     "python_formatter",
        should_execute,
     {
-        "continue": "python_executor",
-        "end": END,
+        "execute": "python_executor",
+        "summarize": "python_summarizer"
     },
 )
+workflow.add_edge("python_summarizer", END)
 
 workflow.add_conditional_edges(
     "python_executor",
@@ -133,11 +136,13 @@ async def main(query: str):
 
 
     answer = await app.ainvoke(inputs)
-    return answer
+    if hasattr(answer, "generation"):
+        return answer["generation"]
+    else:
+        return answer
 
     #print(answer['generation'])
 
-
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main("for mouse 721291 can you make a table of sessions, date, and session_type?"))
+# import asyncio
+# query = "for mouse 721291 can you make a table of sessions, date, and session_type?"
+# print(asyncio.run((main(query))))

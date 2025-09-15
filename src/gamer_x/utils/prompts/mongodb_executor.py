@@ -48,6 +48,10 @@ def get_mongodb_execute_prompt(mongodb_output,
                     "text": f"{mongodb_prompt}",
                 },
                 {
+                    "type": "text",
+                    "text": f"{things_to_note}",
+                },
+                {
                     "cachePoint": {"type": "default"},
                 },
             ],

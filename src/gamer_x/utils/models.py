@@ -10,7 +10,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 
 from gamer_x.utils.tools import (
-    # schema_context_tools, 
+
     mongodb_execute_tools,
     python_execute_tools
     )
@@ -58,7 +58,9 @@ class CodeGenerator(TypedDict):
             "necessary imports and print statements"
         ),
     ]
-code_generator_agent = SONNET_4_LLM.with_structured_output(CodeGenerator)
+
+code_generator_agent = SONNET_4_LLM.bind_tools(python_execute_tools)
+#code_generator_agent = SONNET_4_LLM.with_structured_output(CodeGenerator)
 #prompt = client.pull_prompt("eden19/python_formatter")
 # code_generator_agent = prompt | structured_code_generator
 
