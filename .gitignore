@@ -143,3 +143,6 @@ test.py
 .langgraph_api/
 langgraph.json
 test_assets.py
+.chainlit/
+test.ipynb
+benchmark.ipynb
