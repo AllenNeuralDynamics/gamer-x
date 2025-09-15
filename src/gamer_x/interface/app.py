@@ -85,7 +85,11 @@ async def on_message(msg: cl.Message):
                     await current_step.update()
             
             # Stream content from specific nodes
-            stream_nodes = ["get_schema_context", "execute_mongodb_query", "python_executor"]
+            stream_nodes = ["get_schema_context", 
+                            "execute_mongodb_query", 
+                            "python_executor", 
+                            "python_formatter",
+                            "python_summarizer"]
 
             # if (node_name == "python_formatter" and 
             #     hasattr(chunk, 'tool_call_chunks') and 
@@ -121,7 +125,9 @@ async def on_message(msg: cl.Message):
                     node_headers = {
                         "get_schema_context": "📋 **Schema Information:**\n",
                         "execute_mongodb_query": "📊 **Query Results:**\n", 
-                        "python_executor": "🐍 **Analysis Summary:**\n"
+                        "python_executor": "🐍 **Analysis Summary:**\n",
+                        "python_formatter": "🐍 **Python script:**\n",
+                        "python_summarizer":"🐍 **Analysis Summary:**\n"
                     }
                     
                     if node_name in node_headers:
