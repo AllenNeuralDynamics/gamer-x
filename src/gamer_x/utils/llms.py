@@ -6,6 +6,7 @@ BEDROCK_HAIKU_3_5 = "us.anthropic.claude-3-5-haiku-20241022-v1:0"
 SONNET_4_LLM = ChatBedrockConverse(
     model=BEDROCK_SONNET_4,
     temperature=0,
+    region_name="us-west-2"
     #streaming=True,
 )
 # HAIKU_3_5_LLM = ChatBedrock(
