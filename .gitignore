@@ -141,8 +141,9 @@ dmypy.json
 # extras
 test.py
 .langgraph_api/
-langgraph.json
 test_assets.py
 .chainlit/
 test.ipynb
 benchmark.ipynb
+assets_to_add.pkl
+v2_eval.py
