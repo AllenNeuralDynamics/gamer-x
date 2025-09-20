@@ -1,3 +1,4 @@
+"""Script defining tools used in workflow"""
 from langchain_core.tools import tool
 from aind_data_access_api.document_db import MetadataDbClient
 from typing import Literal, Any

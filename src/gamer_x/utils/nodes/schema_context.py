@@ -1,66 +1,39 @@
-import json
 
-from langchain_core.messages import ToolMessage
-from langchain_core.messages import AIMessage
+"""
+Schema context node for LangGraph workflow.
+
+Functions:
+1. get_schema_context() - Analyze user query and retrieve relevant schema information
+"""
+from typing import Any, Dict, List
 
 from gamer_x.utils.llms import SONNET_4_LLM
-# from gamer_x.utils.tools import schema_context_tools, retrieve_schema_context
-# from gamer_x.utils.models import(
-#     # schema_context_model,
-#     # schema_context_agent
-# )
 from gamer_x.utils.prompts.schema_context_agent import (
     get_schema_context_prompt,
-    )
+)
 
+async def get_schema_context(state: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Retrieves and manages database schema context information.
+    
+    This function uses an AI agent to analyze the user's query and retrieve relevant
+    database schema information that can help with query processing and code generation.
+    It accumulates schema context over multiple calls to build comprehensive context.
+    
+    Args:
+        state (Dict[str, Any]): The workflow state containing:
+            - query (str, optional): The user's query to analyze for schema needs
+            - schema_context (List, optional): Previously accumulated schema context
+            - schema_call_count (int, optional): Number of schema context calls made
+    
+    Returns:
+        Dict[str, Any]: Updated state with schema context:
+            - messages (List): AI agent response with schema information
+            - schema_context (List): Accumulated schema context information
 
-# def should_continue_schema(state):
-#     messages = state["messages"]
-#     last_message = messages[-1]
-#     schema_call_count = state.get("schema_call_count", 0)
-
-#     if not last_message.tool_calls:
-#         return "end"
-#     elif schema_call_count > 3:
-#         return "end"
-#     else:
-#         return "continue"
-
-
-# async def get_schema_context_tools(state: dict):
-#     """
-#     Retrieving information from MongoDB with tools
-#     """
-
-#     tool_call_count = state.get("schema_call_count", 0) + 1
-
-#     tools_by_name = {tool.name: tool for tool in schema_context_tools}
-
-#     outputs = []
-
-#     for i, tool_call in enumerate(state["messages"][-1].tool_calls):
-
-#         tool_result = await tools_by_name[tool_call["name"]].ainvoke(
-#             tool_call["args"]
-#         )
-#         outputs.append(
-#             ToolMessage(
-#                 content=json.dumps(tool_result),
-#                 name=tool_call["name"],
-#                 tool_call_id=tool_call["id"],
-#             )
-#         )
-
-#     return {
-#         "messages": outputs,
-#         "schema_context": outputs,
-#         "schema_call_count": tool_call_count
-#     }
-
-async def get_schema_context(state: dict):
-
+    """
     query = state.get("query", "No query was provided")
-    schema_context= state.get("schema_context", [])
+    schema_context = state.get("schema_context", [])
     tool_call_count = state.get("schema_call_count", 0)
 
     prompt = get_schema_context_prompt(
@@ -69,11 +42,11 @@ async def get_schema_context(state: dict):
         tool_call_count=tool_call_count
     )
 
-    response = await SONNET_4_LLM.ainvoke(
-        prompt
-    )
+    response = await SONNET_4_LLM.ainvoke(prompt)
     
     schema_context.append(response.content)
 
-    return {"messages":[response],
-            "schema_context": schema_context}
+    return {
+        "messages": [response],
+        "schema_context": schema_context
+    }

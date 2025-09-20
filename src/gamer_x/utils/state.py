@@ -1,3 +1,6 @@
+"""
+Script defining graph state for workflow
+"""
 from typing import Annotated, List, Optional
 
 from langchain_core.messages import AIMessage, AnyMessage, ToolMessage

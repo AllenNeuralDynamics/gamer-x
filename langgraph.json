@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./src/gamer_x/agent.py:app"
+  },
+  "env": ".env"
+}

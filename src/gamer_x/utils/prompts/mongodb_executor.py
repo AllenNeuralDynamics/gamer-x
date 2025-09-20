@@ -1,4 +1,5 @@
-from typing import Optional
+""" Cached prompt for use in Langgraph workflow """
+
 def get_mongodb_execute_prompt(mongodb_output, 
                                mongodb_query, 
                                query, 

@@ -5,7 +5,6 @@ import os
 from typing import Annotated, Literal, TypedDict
 
 from langsmith import Client
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 
@@ -19,12 +18,6 @@ from gamer_x.utils.llms import SONNET_4_LLM
 
 client = Client(api_key=os.getenv("LANGSMITH_API_KEY"))
 
-#  Model that retrieves information about the schema structure 
-# template = client.pull_prompt("eden19/mcp-langgraph-schema-context")
-# schema_context_model = SONNET_4_LLM.bind_tools(schema_context_tools)
-# schema_context_agent = template | schema_context_model
-
-#  Model that determines whether Python script or MongoDB query should be executed
 class CodeorQuery(TypedDict):
     """Route a user query to the most relevant datasource."""
 
@@ -60,9 +53,6 @@ class CodeGenerator(TypedDict):
     ]
 
 code_generator_agent = SONNET_4_LLM.bind_tools(python_execute_tools)
-#code_generator_agent = SONNET_4_LLM.with_structured_output(CodeGenerator)
-#prompt = client.pull_prompt("eden19/python_formatter")
-# code_generator_agent = prompt | structured_code_generator
 
 # Agent that examines python executor's output
 class ScriptReformatOrNo(TypedDict):
