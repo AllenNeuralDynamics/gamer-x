@@ -1,3 +1,6 @@
+# Archive Notice
+This repo is being archived.
+
 # GAMER: Generative Analysis for Metadata Retrieval
 
 [![License](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
